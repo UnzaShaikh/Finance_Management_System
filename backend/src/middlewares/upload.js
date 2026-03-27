@@ -2,10 +2,18 @@ const multer = require('multer');
 const path = require('path');
 const fs = require('fs');
 
-// Ensure the avatars directory exists
-const uploadDir = 'uploads/avatars';
-if (!fs.existsSync(uploadDir)) {
-  fs.mkdirSync(uploadDir, { recursive: true });
+// Ensure the avatars directory exists - handling Vercel's read-only filesystem
+const isVercel = process.env.VERCEL === '1';
+const uploadDir = isVercel
+  ? path.join('/tmp', 'uploads', 'avatars')
+  : 'uploads/avatars';
+
+try {
+  if (!fs.existsSync(uploadDir)) {
+    fs.mkdirSync(uploadDir, { recursive: true });
+  }
+} catch (error) {
+  console.warn("Could not create avatars directory, likely on a read-only filesystem:", error.message);
 }
 
 // Set up storage
