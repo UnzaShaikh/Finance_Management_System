@@ -12,20 +12,10 @@ const app = express();
 // Middlewares
 app.use(cors());
 app.use(express.json());
-// Ensure the uploads directory exists - handling Vercel's read-only filesystem
-const isVercel = process.env.VERCEL === '1';
-const uploadsPath = isVercel 
-  ? path.join('/tmp', 'uploads')
-  : path.join(__dirname, '../uploads');
-
-try {
-  if (!fs.existsSync(uploadsPath)) {
-    fs.mkdirSync(uploadsPath, { recursive: true });
-  }
-} catch (error) {
-  console.warn("Could not create uploads directory, likely on a read-only filesystem:", error.message);
+const uploadsPath = path.join(__dirname, '../uploads');
+if (!fs.existsSync(uploadsPath)) {
+  fs.mkdirSync(uploadsPath, { recursive: true });
 }
-
 app.use('/uploads', express.static(uploadsPath));
 
 // Import Routes
