@@ -1,5 +1,7 @@
 {
   "version": 2,
+  "buildCommand": "npm run build",
+  "outputDirectory": "public",
   "functions": {
     "api/index.js": {
       "includeFiles": "backend/**"
@@ -11,11 +13,7 @@
       "destination": "/api/index.js"
     },
     {
-      "source": "/uploads/(.*)",
-      "destination": "/api/index.js"
-    },
-    {
-      "source": "/((?!api|uploads).*)",
+      "source": "/((?!api).*)",
       "destination": "/index.html"
     }
   ],
