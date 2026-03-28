@@ -9,7 +9,7 @@
   "scripts": {
     "build": "npm run build-backend && npm run build-frontend && mkdir -p public && cp -r frontend/dist/* public/",
     "build-backend": "npx prisma generate --schema=backend/prisma/schema.prisma",
-    "build-frontend": "cd frontend && npm install && npm run build"
+    "build-frontend": "cd frontend && npm install --include=dev && npm run build"
   },
   "engines": {
     "node": "20.x"
