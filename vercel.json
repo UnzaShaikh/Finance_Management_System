@@ -8,15 +8,15 @@
   "rewrites": [
     {
       "source": "/api/(.*)",
-      "destination": "api/index.js"
+      "destination": "/api/index.js"
     },
     {
       "source": "/uploads/(.*)",
-      "destination": "api/index.js"
+      "destination": "/api/index.js"
     },
     {
-      "source": "/(.*)",
-      "destination": "frontend/dist/$1"
+      "source": "/((?!api|uploads).*)",
+      "destination": "/index.html"
     }
   ],
   "cleanUrls": true

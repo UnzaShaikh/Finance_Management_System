@@ -1,7 +1,5 @@
-const { PrismaClient } = require("@prisma/client");
+const prisma = require("../prisma");
 const { categorizeTransaction } = require("../utils/categorization");
-
-const prisma = new PrismaClient();
 
 // Helper to find a category based on user history or rules
 const getSmartCategory = async (userId, description) => {

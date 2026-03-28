@@ -1,6 +1,6 @@
 {
   "scripts": {
-    "build": "npm run build-backend && npm run build-frontend",
+    "build": "npm run build-backend && npm run build-frontend && mkdir -p public && cp -r frontend/dist/* public/",
     "build-backend": "cd backend && npm install && npx prisma generate",
     "build-frontend": "cd frontend && npm install && npm run build"
   },
