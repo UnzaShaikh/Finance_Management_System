@@ -1,8 +1,7 @@
 {
   "version": 2,
-  "buildCommand": "npm run build",
-  "outputDirectory": "public",
-  "installCommand": "npm install --include=dev",
+  "buildCommand": "npm run build-backend && npm run build-frontend",
+  "outputDirectory": "frontend/dist",
   "functions": {
     "api/index.js": {
       "includeFiles": "backend/**"
