@@ -12,15 +12,21 @@ const app = express();
 // Middlewares
 app.use(cors());
 app.use(express.json());
-const uploadsPath = path.join(__dirname, '../uploads');
+const uploadsPath = process.env.NODE_ENV === 'production'
+  ? '/tmp/uploads'
+  : path.join(__dirname, '../uploads');
+
 try {
   if (!fs.existsSync(uploadsPath)) {
     fs.mkdirSync(uploadsPath, { recursive: true });
   }
 } catch (err) {
-  console.warn("Could not create uploads directory (expected on Vercel)", err.message);
+  console.warn("Could not create uploads directory:", err.message);
 }
-app.use('/uploads', express.static(uploadsPath));
+
+if (process.env.NODE_ENV !== 'production') {
+  app.use('/uploads', express.static(uploadsPath));
+}
 
 // Import Routes
 const authRoutes = require("./routes/auth");

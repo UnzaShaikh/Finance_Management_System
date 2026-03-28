@@ -137,22 +137,36 @@ const changePassword = async (req, res) => {
   }
 };
 
+const { put } = require('@vercel/blob');
+
 const uploadAvatar = async (req, res) => {
   try {
     if (!req.file) {
       return res.status(400).json({ message: "No file uploaded" });
     }
-    
-    // Construct public URL
-    const fileUrl = `${req.protocol}://${req.get('host')}/uploads/avatars/${req.file.filename}`;
-    
-    res.json({ 
-      message: "Avatar uploaded successfully", 
-      avatarUrl: fileUrl 
+
+    let avatarUrl;
+
+    if (process.env.NODE_ENV === 'production') {
+      const filename = `avatars/${req.user.id}-${Date.now()}${require('path').extname(req.file.originalname)}`;
+      const blob = await put(filename, req.file.buffer, {
+        access: 'public',
+        contentType: req.file.mimetype,
+      });
+      avatarUrl = blob.url;
+    } else {
+      avatarUrl = `/uploads/avatars/${req.file.filename}`;
+    }
+
+    await prisma.user.update({
+      where: { id: req.user.id },
+      data: { avatarUrl }
     });
+
+    res.json({ avatarUrl });
   } catch (error) {
-    console.error("Upload Avatar Error:", error);
-    res.status(500).json({ message: "Server error uploading avatar" });
+    console.error("Avatar upload error:", error);
+    res.status(500).json({ message: "Avatar upload failed" });
   }
 };
 
