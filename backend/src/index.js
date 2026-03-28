@@ -13,8 +13,12 @@ const app = express();
 app.use(cors());
 app.use(express.json());
 const uploadsPath = path.join(__dirname, '../uploads');
-if (!fs.existsSync(uploadsPath)) {
-  fs.mkdirSync(uploadsPath, { recursive: true });
+try {
+  if (!fs.existsSync(uploadsPath)) {
+    fs.mkdirSync(uploadsPath, { recursive: true });
+  }
+} catch (err) {
+  console.warn("Could not create uploads directory (expected on Vercel)", err.message);
 }
 app.use('/uploads', express.static(uploadsPath));
 
